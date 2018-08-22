@@ -6,6 +6,7 @@ use OAF\Middleware\ContentTypeMiddleware;
 use OAF\Middleware\AuthMiddleware;
 use OAF\Auth\JsonWebToken;
 use OAF\Error\ErrorHandler;
+use Symfony\Console\Application\Application;
 
 return [
     /**
@@ -36,5 +37,8 @@ return [
      */
     'errorHandler' => function (ContainerInterface $c) {
         return new ErrorHandler($c->get(Encoder::class));
+    },
+    Application::class => function (ContainerInterface $c) {
+        return new Application('OAF', '1.0');
     }
 ];
