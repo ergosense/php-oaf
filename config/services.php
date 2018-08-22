@@ -1,22 +1,23 @@
 <?php
 use Psr\Container\ContainerInterface;
-use OAF\Serializer\Serializer;
-use OAF\Serializer\JsonDataSerializer;
+use OAF\Encoder\Encoder;
+use OAF\Encoder\JsonDataEncoder;
 use OAF\Middleware\ContentTypeMiddleware;
 use OAF\Middleware\AuthMiddleware;
 use OAF\Auth\JsonWebToken;
+use OAF\Error\ErrorHandler;
 
 return [
     /**
      * Content serializer. Responsible for handling the "Accept"
      * header specified by the end user.
      */
-    Serializer::class => function (ContainerInterface $c) {
-        $serializer = new Serializer();
+    Encoder::class => function (ContainerInterface $c) {
+        $encoder = new Encoder();
 
         // Register the allowed output serializers
-        $serializer->register(new JsonDataSerializer());
-        return $serializer;
+        $encoder->register(new JsonDataEncoder());
+        return $encoder;
     },
     /**
      * Authentication. Ensures user has access to our system
@@ -29,5 +30,11 @@ return [
         // Register the allowed authentication methods
         $auth->register(new JsonWebToken($c->get('settings.jwt_key')));
         return $auth;
+    },
+    /**
+     * Overwrite the default Slim error handler
+     */
+    'errorHandler' => function (ContainerInterface $c) {
+        return new ErrorHandler($c->get(Encoder::class));
     }
 ];

@@ -2,6 +2,7 @@
 namespace OAF;
 
 use DI\ContainerBuilder;
+use OAF\Middleware\AcceptMiddleware;
 
 class App extends \Slim\App
 {

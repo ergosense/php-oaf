@@ -1,18 +1,18 @@
 <?php
-namespace OAF\Serializer;
+namespace OAF\Encoder;
 
 use Slim\Http\Body;
 use Psr\Http\Message\ResponseInterface;
 use \Exception;
 
-class JsonDataSerializer implements SerializerInterface
+class JsonDataEncoder implements EncoderInterface
 {
   public function type()
   {
     return 'application/json';
   }
 
-  public function serialize(array $data)
+  public function encode(array $data)
   {
     return json_encode($data);
   }

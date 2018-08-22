@@ -1,15 +1,15 @@
 <?php
 namespace OAF\Responder;
 
-use OAF\Serializer\Serializer;
+use OAF\Encoder\Encoder;
 
 class Base
 {
-    private $serializer;
+    private $encoder;
 
-    public function __construct(Serializer $serializer)
+    public function __construct(Encoder $encoder)
     {
-        $this->serializer = $serializer;
+        $this->encoder = $encoder;
     }
 
     protected function format(array $data)
@@ -21,7 +21,7 @@ class Base
 
     public function respond(array $data, $request, $response)
     {
-        return $this->serializer->serialize(
+        return $this->encoder->encode(
             $this->format($data),
             $request,
             $response
