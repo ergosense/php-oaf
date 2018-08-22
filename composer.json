@@ -1,0 +1,13 @@
+{
+    "name": "ergosense/php-oaf",
+    "require": {
+        "slim/slim": "^3.0",
+        "firebase/php-jwt": "^5.0",
+        "php-di/php-di": "^6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "OAF\\": "src/"
+        }
+    }
+}
