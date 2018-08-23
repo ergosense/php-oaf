@@ -1,44 +1,38 @@
 <?php
-use Psr\Container\ContainerInterface;
-use OAF\Encoder\Encoder;
-use OAF\Encoder\JsonDataEncoder;
-use OAF\Middleware\ContentTypeMiddleware;
-use OAF\Middleware\AuthMiddleware;
-use OAF\Auth\JsonWebToken;
-use OAF\Error\ErrorHandler;
-use Symfony\Console\Application\Application;
+use FastRoute\Dispatcher;
+use FastRoute\RouteCollector;
+use FastRoute\RouteParser;
+use FastRoute\DataGenerator;
+
+use FastRoute\Dispatcher\GroupCountBased;
+use FastRoute\RouteParser\Std;
+use FastRoute\DataGenerator\GroupCountBased as GroupCountBasedGenerator;
+use OAF\RouteLoaderInterface;
+use OAF\PhpRouteLoader;
 
 return [
-    /**
-     * Content serializer. Responsible for handling the "Accept"
-     * header specified by the end user.
-     */
-    Encoder::class => function (ContainerInterface $c) {
-        $encoder = new Encoder();
+  RouteParser::class => function ($c) {
+    return new Std;
+  },
+  DataGenerator::class => function ($c) {
+    return new GroupCountBasedGenerator;
+  },
+  RouteLoaderInterface::class => function ($c) {
+    return new PhpRouteLoader($c->get('routes'));
+  },
+  RouteCollector::class => function ($c) {
+    $collector = new RouteCollector(
+      $c->get(RouteParser::class),
+      $c->get(DataGenerator::class)
+    );
 
-        // Register the allowed output serializers
-        $encoder->register(new JsonDataEncoder());
-        return $encoder;
-    },
-    /**
-     * Authentication. Ensures user has access to our system
-     * and populates the route with the ID of the user requesting the
-     * resource.
-     */
-    AuthMiddleware::class => function (ContainerInterface $c) {
-        $auth = new AuthMiddleware();
+    $loader = $c->get(RouteLoaderInterface::class);
+    $loader->load($collector);
 
-        // Register the allowed authentication methods
-        $auth->register(new JsonWebToken($c->get('settings.jwt_key')));
-        return $auth;
-    },
-    /**
-     * Overwrite the default Slim error handler
-     */
-    'errorHandler' => function (ContainerInterface $c) {
-        return new ErrorHandler($c->get(Encoder::class));
-    },
-    Application::class => function (ContainerInterface $c) {
-        return new Application('OAF', '1.0');
-    }
+    return $collector;
+  },
+  Dispatcher::class => function ($c) {
+    $collector = $c->get(RouteCollector::class);
+    return new GroupCountBased($collector->getData());
+  }
 ];
