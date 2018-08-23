@@ -10,6 +10,7 @@ use Zend\Diactoros\Response;
 use FastRoute\Dispatcher;
 
 use \Middlewares\FastRoute;
+use \middlewares\JsonPayload;
 
 use DI\ContainerBuilder;
 
@@ -24,7 +25,7 @@ class Kernel implements RequestHandlerInterface
         $builder = new ContainerBuilder;
 
         // Default framework services
-        $builder->addDefinitions(__DIR__ . '/services.php');
+        $builder->addDefinitions(__DIR__ . '/../config/services.php');
 
         // Custom user services
         foreach ($definitionFiles as $def) {
@@ -40,8 +41,9 @@ class Kernel implements RequestHandlerInterface
         // Default framework middleware
         $this
             // Routing
-            ->with(new \Middlewares\RequestHandler)
-            ->with(new FastRoute($this->c->get(Dispatcher::class)));
+            ->with(new \Middlewares\RequestHandler($this->c))
+            ->with(new FastRoute($this->c->get(Dispatcher::class)))
+            ->with(new JsonPayload);
     }
 
     public function with(MiddlewareInterface $middleware)
