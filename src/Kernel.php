@@ -10,7 +10,7 @@ use Zend\Diactoros\Response;
 use FastRoute\Dispatcher;
 
 use \Middlewares\FastRoute;
-use \middlewares\JsonPayload;
+use \Middlewares\JsonPayload;
 
 use DI\ContainerBuilder;
 
