@@ -1,5 +1,5 @@
 <?php
-namespace OAF\Middlewares\RequestHandler;
+namespace OAF\Invoker;
 
 use RuntimeException;
 use Psr\Container\ContainerInterface;
@@ -8,7 +8,7 @@ use Psr\Container\ContainerInterface;
  * This class resolves a string of the format 'class:method' into a closure
  * that can be dispatched.
  */
-class CallableResolver
+class Resolver
 {
     const CALLABLE_PATTERN = '!^([^\:]+)\:([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)$!';
 

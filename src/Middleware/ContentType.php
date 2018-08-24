@@ -1,8 +1,8 @@
 <?php
-namespace OAF\Middlewares;
+namespace OAF\Middleware;
 
 use Middlewares\ContentType as BaseContentType;
-use OAF\Encoders\ResponseEncoderInterface;
+use OAF\Encoder\ResponseEncoderInterface;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

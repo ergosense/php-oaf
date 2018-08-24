@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace OAF\Encoders;
+namespace OAF\Encoder;
 
 use Psr\Http\Message\ServerRequestInterface;
 

@@ -1,10 +1,11 @@
 <?php
 use Psr\Container\ContainerInterface;
-use OAF\Encoders\ResponseEncoderInterface;
-use OAF\Encoders\ResponseEncoder;
-use OAF\Encoders\JsonEncoder;
+use OAF\Encoder\ResponseEncoderInterface;
+use OAF\Encoder\ResponseEncoder;
+use OAF\Encoder\JsonEncoder;
+use OAF\Invoker\Resolver;
 
-return [
+$services = [
     /**
      * Configure response encoding. Together with the RequestHandler
      * middleware. This component will format an array into the appropriate
@@ -14,5 +15,22 @@ return [
         return new ResponseEncoder([
           new JsonEncoder
         ]);
+    },
+    /**
+     * Invoker
+     */
+    Invoker::class => function (ContainerInterface $c) {
+        return Invoker($c->get(Resolver::class, ResponseEncoderInterface::class));
+    },
+    /**
+     * Resolver
+     */
+    Resolver::class => function (ContainerInterface $c) {
+        return new Resolver($c);
     }
 ];
+
+// Include route information
+$services += require_once __DIR__ . '/services_routes.php';
+
+return $services;
