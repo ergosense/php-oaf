@@ -33,4 +33,7 @@ $services = [
 // Include route information
 $services += require_once __DIR__ . '/services_routes.php';
 
+// Include authorizers
+$services += require_once __DIR__ . '/services_auth.php';
+
 return $services;
