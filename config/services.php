@@ -20,7 +20,7 @@ $services = [
      * Invoker
      */
     Invoker::class => function (ContainerInterface $c) {
-        return Invoker($c->get(Resolver::class, ResponseEncoderInterface::class));
+        return Invoker($c->get(Resolver::class), $c->get(ResponseEncoderInterface::class));
     },
     /**
      * Resolver

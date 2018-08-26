@@ -16,6 +16,6 @@ class MemoryUser implements UserInterface
 
     public function username()
     {
-        return $this->name = $name;
+        return $this->name;
     }
 }
