@@ -1,14 +1,12 @@
 {
     "name": "ergosense/php-oaf",
     "require": {
-        "zendframework/zend-stratigility": "*",
         "psr/http-server-handler": "*",
         "psr/http-server-middleware": "*",
+        "zendframework/zend-stratigility": "*",
         "zendframework/zend-diactoros": "*",
         "middlewares/fast-route": "^1.1",
         "middlewares/payload": "*",
-        "middlewares/negotiation": "^1.1",
-        "firebase/php-jwt": "^5.0",
         "php-di/php-di": "^6.0"
     },
     "autoload": {
