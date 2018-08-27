@@ -1,5 +1,5 @@
 <?php
-namespace OAF\Auth;
+namespace OAF\User;
 
 class GuestUser implements UserInterface
 {

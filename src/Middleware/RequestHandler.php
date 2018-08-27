@@ -10,17 +10,16 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Server\MiddlewareInterface;
 
 use OAF\Route\RouteBridgeInterface as RouteBridge;
-use OAF\Encoder\ResponseEncoderInterface;
-use OAF\Invoker\Invoker;
+use OAF\ResolvablePipe;
 
 class RequestHandler implements MiddlewareInterface
 {
     /**
      * Set the resolver instance.
      */
-    public function __construct(RouteBridge $bridge, Invoker $invoker)
+    public function __construct(RouteBridge $bridge, ContainerInterface $container)
     {
-        $this->invoker = $invoker;
+        $this->container = $container;
         $this->bridge = $bridge;
     }
 
@@ -31,9 +30,16 @@ class RequestHandler implements MiddlewareInterface
     {
         $route = $this->bridge->dispatch($request);
 
-        // TODO factory
-        $response = new \Zend\Diactoros\Response();
+        $callable = (array) $route->callable;
 
-        return $this->invoker->invoke($route, $request, $response);
+        $pipeline = new ResolvablePipe($this->container);
+
+        foreach ($callable as $middleware) {
+            $pipeline->pipe($middleware);
+        }
+
+        $pipeline->pipe($handler);
+
+        return $pipeline->handle($request);
     }
 }
