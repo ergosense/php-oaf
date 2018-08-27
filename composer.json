@@ -7,10 +7,8 @@
         "zendframework/zend-diactoros": "*",
         "middlewares/fast-route": "^1.1",
         "middlewares/payload": "*",
-        "php-di/php-di": "^6.0"
-    },
-    "scripts": {
-        "server": "php -d max_execution_time=0 -S localhost:8080 -t public"
+        "php-di/php-di": "^6.0",
+        "symfony/console": "*"
     },
     "autoload": {
         "psr-4": {
