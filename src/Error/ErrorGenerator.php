@@ -8,6 +8,11 @@ use Zend\Stratigility\Utils;
 
 class ErrorGenerator
 {
+    public function __construct(array $map = [])
+    {
+        $this->map = $map;
+    }
+
     public function generate(Throwable $e, ServerRequestInterface $request) : ResponseInterface
     {
         $response = new \Zend\Diactoros\Response\JsonResponse([
