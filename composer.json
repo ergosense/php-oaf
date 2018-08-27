@@ -19,5 +19,5 @@
     },
     "suggest": {
         "respect/validation": "Install respect/validation for helpful validation via OAF/validate()"
-    },
+    }
 }
